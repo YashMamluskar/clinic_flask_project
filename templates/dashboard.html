@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block head_styles %}
+<style>
+    .welcome-header {
+        margin-bottom: 2rem;
+    }
+    .welcome-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin: 0;
+    }
+    .welcome-header p {
+        color: var(--muted-text-color);
+        font-size: 1rem;
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+    .stat-card {
+        background-color: var(--card-background);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .stat-card .icon-wrapper {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .stat-card .icon-wrapper svg {
+        width: 28px;
+        height: 28px;
+        color: white;
+    }
+    .stat-card .info h3 {
+        font-size: 2.5rem;
+        margin: 0;
+        color: var(--text-color);
+    }
+    .stat-card .info p {
+        margin: 0;
+        color: var(--muted-text-color);
+        font-weight: 500;
+    }
+    /* Colors for each card's icon */
+    .bg-blue { background-color: #4A90E2; }
+    .bg-green { background-color: #50E3C2; }
+    .bg-orange { background-color: #F5A623; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="welcome-header">
+    <h1>Welcome, {{ current_user.username }}!</h1>
+    <p>Here is a summary of the clinic's activity.</p>
+</div>
+
+<div class="stats-grid">
+    <!-- Total Patients Card -->
+    <div class="stat-card">
+        <div class="icon-wrapper bg-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="info">
+            <h3>{{ stats.total_patients }}</h3>
+            <p>Total Patients</p>
+        </div>
+    </div>
+
+    <!-- Total Consultations Card -->
+    <div class="stat-card">
+        <div class="icon-wrapper bg-green">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        </div>
+        <div class="info">
+            <h3>{{ stats.total_consultations }}</h3>
+            <p>Consultations Logged</p>
+        </div>
+    </div>
+
+    <!-- Pending Prescriptions Card -->
+    <div class="stat-card">
+        <div class="icon-wrapper bg-orange">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
+        </div>
+        <div class="info">
+            <h3>{{ stats.pending_prescriptions }}</h3>
+            <p>Pending Prescriptions</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

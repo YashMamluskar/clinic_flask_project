@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to ClinicFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --text-color: #343A40;
+            --background-color: #FFFFFF;
+            --light-gray: #F8F9FA;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: var(--background-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .top-nav .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .nav-buttons a {
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .btn-login {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+        .btn-login:hover {
+            background-color: #eef5ff;
+        }
+        .btn-register {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-register:hover {
+            background-color: #4281CB;
+        }
+        .hero-section {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://placehold.co/1200x600/4A90E2/FFFFFF?text=Modern+Clinic');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 8rem 2rem;
+        }
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .hero-section p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 1rem auto 2rem;
+        }
+        .info-section {
+            padding: 4rem 5%;
+            text-align: center;
+        }
+        .info-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .info-card {
+            background-color: var(--light-gray);
+            padding: 2rem;
+            border-radius: 16px;
+        }
+        .info-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="{{ url_for('index') }}" class="logo">ClinicFlow</a>
+        <div class="nav-buttons">
+            <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+            <a href="{{ url_for('register_user') }}" class="btn-register">Register Staff</a>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <h1>Streamlining Clinic Management</h1>
+        <p>Efficient, secure, and user-friendly software designed to manage your clinic's entire workflow, from patient registration to pharmacy.</p>
+        <a href="{{ url_for('login') }}" class="btn-register">Access Secure Portal</a>
+    </section>
+
+    <section class="info-section">
+        <h2>Why Choose ClinicFlow?</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Centralized Data</h3>
+                <p>Access all patient records, consultation history, and prescriptions in one secure, unified system.</p>
+            </div>
+            <div class="info-card">
+                <h3>Role-Based Security</h3>
+                <p>Ensure data privacy with specific roles for reception, doctors, and pharmacists, each with tailored access.</p>
+            </div>
+            <div class="info-card">
+                <h3>Efficient Workflow</h3>
+                <p>Optimize the patient journey from check-in to medication dispensing, reducing wait times and errors.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

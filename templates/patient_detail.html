@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ patient.name }}'s Details{% endblock %}
+
+{% block head_styles %}
+<style>
+    .container { max-width: 1200px; margin: 2rem auto; }
+    .patient-header { background-color: var(--card-background); padding: 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+    .patient-header h1 { margin: 0; }
+    .patient-header p { color: var(--muted-text-color); margin: 0.5rem 0 0; }
+    .grid-container { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+    .form-card, .history-card { background-color: var(--card-background); padding: 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    h2 { margin-top: 0; }
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+    input, textarea, select { width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    textarea { resize: vertical; min-height: 120px; }
+    .btn { display: inline-block; width: auto; padding: 0.9rem 1.5rem; border: none; background-color: var(--primary-color); color: white; font-size: 1rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; }
+    .btn-full { width: 100%; }
+    .consultation-item { border-bottom: 1px solid var(--border-color); padding: 1.5rem 0; }
+    .consultation-item:last-child { border-bottom: none; }
+    .consultation-date { font-weight: 600; color: var(--text-color); }
+    .consultation-details { color: var(--muted-text-color); margin-top: 0.5rem; }
+    .consultation-details strong { color: var(--text-color); }
+    .prescription-form { background-color: #f7f9fc; padding: 1.5rem; margin-top: 1.5rem; border-radius: 8px; border: 1px dashed var(--border-color); }
+    .prescription-list { list-style: none; padding-left: 0; margin-top: 1rem; }
+    .prescription-list li { background-color: #eef5ff; padding: 0.5rem 1rem; border-radius: 6px; margin-bottom: 0.5rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="patient-header">
+        <h1>{{ patient.name }}</h1>
+        <p><strong>Email:</strong> {{ patient.email }} | <strong>Phone:</strong> {{ patient.phone_number or 'N/A' }}</p>
+    </div>
+
+    <div class="grid-container">
+        <div class="form-card">
+            <h2>New Consultation Note</h2>
+            <!-- This form now points to a new route to handle its submission -->
+            <form action="{{ url_for('add_consultation', patient_id=patient.id) }}" method="POST">
+                <div class="form-group">
+                    <label for="diagnosis">Diagnosis</label>
+                    <input type="text" id="diagnosis" name="diagnosis" required>
+                </div>
+                <div class="form-group">
+                    <label for="doctor_notes">Doctor's Notes</label>
+                    <textarea id="doctor_notes" name="doctor_notes" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-full">Save Note</button>
+            </form>
+        </div>
+
+        <div class="history-card">
+            <h2>Consultation History</h2>
+            {% if patient.consultations %}
+                {% for consultation in patient.consultations|reverse %}
+                    <div class="consultation-item">
+                        <div class="consultation-date">{{ consultation.consultation_date.strftime('%B %d, %Y at %I:%M %p') }}</div>
+                        <div class="consultation-details">
+                            <strong>Diagnosis:</strong> {{ consultation.diagnosis }}<br>
+                            <strong>Notes:</strong> {{ consultation.doctor_notes }}
+                        </div>
+
+                        <!-- Display existing prescriptions -->
+                        {% if consultation.prescriptions %}
+                        <ul class="prescription-list">
+                            {% for med in consultation.prescriptions %}
+                            <li><strong>{{ med.medicine_name }}</strong> - {{ med.dosage }} ({{ med.status }})</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        <!-- Form to add a new prescription to THIS consultation -->
+                        <div class="prescription-form">
+                            <form action="{{ url_for('add_prescription', consultation_id=consultation.id) }}" method="POST" style="display: flex; gap: 1rem; align-items: flex-end;">
+                                <div style="flex-grow: 1;">
+                                    <label style="font-size: 0.8rem;">Medicine Name</label>
+                                    <input type="text" name="medicine_name" required>
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <label style="font-size: 0.8rem;">Dosage</label>
+                                    <input type="text" name="dosage" placeholder="e.g., 1 tablet, 3 times a day" required>
+                                </div>
+                                <button type="submit" class="btn">+</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No past consultations found for this patient.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

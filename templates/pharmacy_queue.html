@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Pharmacy Queue{% endblock %}
+
+{% block head_styles %}
+<style>
+    .container { max-width: 1200px; margin: 2rem auto; }
+    .queue-card {
+        background-color: var(--card-background);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+    }
+    h1, h2 { color: var(--text-color); }
+    .patient-group { border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 1.5rem; overflow: hidden; }
+    .patient-group-header { background-color: #f7f9fc; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .patient-group-header h2 { margin: 0; font-size: 1.2rem; }
+    .med-list { list-style-type: none; padding: 0; margin: 0; }
+    .med-list li { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); }
+    .btn-success { background-color: #28a745; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Pharmacy Queue - Pending Prescriptions</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if prescriptions_by_patient %}
+        {% for patient, prescriptions in prescriptions_by_patient.items() %}
+        <div class="patient-group">
+            <div class="patient-group-header">
+                <h2>{{ patient.name }}</h2>
+                <form action="{{ url_for('dispense_meds', patient_id=patient.id) }}" method="POST" style="margin:0;">
+                    <button type="submit" class="btn btn-success">Dispense All</button>
+                </form>
+            </div>
+            <ul class="med-list">
+                {% for pres in prescriptions %}
+                <li><strong>{{ pres.medicine_name }}</strong> - {{ pres.dosage }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="queue-card">
+            <p>The pharmacy queue is empty. All prescriptions have been dispensed!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

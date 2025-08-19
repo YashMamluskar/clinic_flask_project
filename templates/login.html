@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <title>Login - ClinicFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Add styles for a centered login form */
+        body { font-family: 'Poppins', sans-serif; background-color: #F8F9FA; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h1 { text-align: center; color: #4A90E2; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        input { width: 100%; padding: 0.8rem; border: 1px solid #CED4DA; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 0.9rem; border: none; background: #4A90E2; color: white; font-size: 1rem; border-radius: 8px; cursor: pointer; }
+        .alert { padding: 1rem; margin-bottom: 1rem; border-radius: 8px; }
+        .alert-danger { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>ClinicFlow Login</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+</body>
+</html>
